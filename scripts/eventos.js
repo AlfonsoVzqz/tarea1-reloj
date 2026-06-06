@@ -54,7 +54,35 @@ document.getElementById("reloj").addEventListener("click", () => {
     CirculoLineas(250, 250, 150, Number(document.getElementById("manecillas").value));
 });
 
-document.getElementById("btnEliminarlineas").addEventListener("click", DibujarCircunferencia);
+document.getElementById("btnEliminarlineas").addEventListener("click", () => {
+    CirculoLineas(250, 250, 150, 60);
+    DibujarCircunferencia();
+    DibujarManecillas(12, 0, 0);
+});
+
+let intervaloReloj = null;
+
+document.getElementById("btnIniciar").addEventListener("click", () => {
+    if (intervaloReloj) return;
+    CirculoLineas(250, 250, 150, 60);
+    DibujarCircunferencia();
+    DibujarManecillas(12, 0, 0);
+
+    let segundos = 0;
+    intervaloReloj = setInterval(() => {
+        segundos++;
+        const s = segundos % 60;
+        const m = Math.floor(segundos / 60) % 60;
+        const h = Math.floor(segundos / 3600) % 12;
+        DibujarCircunferencia();
+        DibujarManecillas(h + m / 60, m + s / 60, s);
+    }, 1000);
+});
+
+document.getElementById("btnDetener").addEventListener("click", () => {
+    clearInterval(intervaloReloj);
+    intervaloReloj = null;
+});
 
 document.getElementById("btnHora").addEventListener("click", () => {
     const h = Number(document.getElementById("inputHoras").value);
